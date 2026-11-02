@@ -1,0 +1,5 @@
+# Yalnızca yerel geliştirme içindir. Gerçek değer yazmayın; .dev.vars dosyası git'e girmez.
+OVERLAY_KEY=
+BROADCASTER_USER_ID=
+# İsteğe bağlı: boşsa açık anahtar Kick'in resmi adresinden okunur.
+KICK_PUBLIC_KEY_PEM=

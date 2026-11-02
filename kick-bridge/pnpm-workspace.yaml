@@ -1,0 +1,5 @@
+# Made By FALCREB
+# Bağımlılıkların kurulum betikleri çalıştırılmaz; wrangler bunlar olmadan da çalışır.
+allowBuilds:
+  esbuild: false
+  workerd: false

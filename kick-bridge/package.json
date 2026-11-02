@@ -1,0 +1,24 @@
+{
+  "name": "neon-kick-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Self-hosted bridge that forwards verified official Kick webhooks to Neon Stream Overlay. Made By FALCREB",
+  "author": "FALCREB",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "new-key": "node scripts/new-key.mjs",
+    "subscribe": "node scripts/kick-events.mjs subscribe",
+    "list": "node scripts/kick-events.mjs list",
+    "unsubscribe": "node scripts/kick-events.mjs unsubscribe"
+  },
+  "devDependencies": {
+    "wrangler": "4.156.0"
+  }
+}
