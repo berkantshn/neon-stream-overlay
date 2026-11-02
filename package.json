@@ -1,0 +1,27 @@
+{
+  "name": "neon-stream-overlay",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Free, zero-backend neon chat overlay for OBS Browser Source. Twitch chat without login, demo mode, URL-based config.",
+  "author": "FALCREB",
+  "license": "MIT",
+  "type": "module",
+  "homepage": "https://berkantshn.github.io/neon-stream-overlay/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/berkantshn/neon-stream-overlay.git"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@11.24.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test \"tests/*.test.js\""
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}

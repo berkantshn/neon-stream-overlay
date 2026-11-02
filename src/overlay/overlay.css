@@ -1,0 +1,262 @@
+/* Made By FALCREB */
+:root {
+  --c1: #00f0ff;
+  --c2: #ff2bd6;
+  --panel-alpha: 0.7;
+  --font-size: 18px;
+  --box-width: 420px;
+  /* Parlama ve ton renkleri main.js'te hesaplanır; eski OBS motorunda color-mix yoktur. */
+  --glow-1: #00f0ff8c;
+  --glow-2: #ff2bd68c;
+  --tint-1: #00f0ff38;
+  --tint-2: #ff2bd638;
+}
+
+/* OBS'te sahnenin görünmesi için arka plan her zaman saydamdır. */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+}
+
+body {
+  font: 500 var(--font-size) / 1.35 'Segoe UI', system-ui, -apple-system, 'Noto Sans', sans-serif;
+  color: #f2f6ff;
+}
+
+#fx {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  padding: 16px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+#stage[data-pos='bl'] { align-items: flex-end; justify-content: flex-start; }
+#stage[data-pos='br'] { align-items: flex-end; justify-content: flex-end; }
+#stage[data-pos='tl'] { align-items: flex-start; justify-content: flex-start; }
+#stage[data-pos='tr'] { align-items: flex-start; justify-content: flex-end; }
+
+#box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(var(--box-width), 100%);
+  max-height: 100%;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border-radius: 14px;
+  background: rgb(7 9 20 / var(--panel-alpha));
+  box-shadow:
+    0 0 14px var(--glow-1),
+    0 0 26px var(--glow-2);
+  transition: opacity 0.3s;
+}
+
+/* Gradyan kenarlık maskeyle yalnızca çerçevede çizilir; panel=0 iken iç kısım gerçekten saydamdır. */
+#box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+#box.is-empty #messages { display: none; }
+#box.is-empty.status-hidden { opacity: 0; }
+
+#box.is-bursting { animation: box-flash 1.6s ease-out; }
+
+@keyframes box-flash {
+  0%, 30% {
+    box-shadow:
+      0 0 28px var(--c1),
+      0 0 70px var(--c2);
+  }
+}
+
+#messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.msg {
+  position: relative;
+  padding: 2px 6px;
+  border-radius: 7px;
+  overflow-wrap: anywhere;
+  animation: msg-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+@keyframes msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.msg-user {
+  margin-right: 0.45em;
+  font-weight: 700;
+  color: var(--user-color, var(--c1));
+  text-shadow: 0 0 7px var(--user-color, var(--c1));
+}
+
+.msg-user::after { content: ':'; }
+.is-action .msg-user::after { content: ''; }
+.is-action .msg-text { font-style: italic; color: var(--user-color, var(--c1)); }
+
+.msg-tag {
+  display: inline-block;
+  margin-right: 0.4em;
+  padding: 0 0.35em;
+  border: 1px solid currentcolor;
+  border-radius: 4px;
+  font-size: 0.62em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  vertical-align: 0.14em;
+  color: var(--c2);
+}
+
+/* Vurgu türleri */
+.emph-trigger {
+  background: linear-gradient(90deg, var(--glow-1), var(--glow-2));
+  box-shadow: 0 0 16px var(--glow-2);
+  font-weight: 700;
+  animation:
+    msg-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2),
+    emph-pulse 1.1s ease-in-out 2;
+}
+
+/* Gradyan zeminde rozet okunaklı kalsın. */
+.emph-trigger .msg-tag { color: #fff; }
+
+.emph-highlight {
+  background: var(--tint-1);
+  box-shadow: inset 3px 0 0 var(--c1), 0 0 12px var(--glow-1);
+}
+
+.emph-mention {
+  background: var(--tint-2);
+  box-shadow: inset 3px 0 0 var(--c2), 0 0 12px var(--glow-2);
+}
+
+.emph-first {
+  box-shadow: inset 0 0 0 1px var(--c1), 0 0 10px var(--glow-1);
+}
+
+@keyframes emph-pulse {
+  50% { filter: brightness(1.45); }
+}
+
+#status {
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.55);
+  font-size: 0.68em;
+  color: #cfe9ff;
+}
+
+#status[data-level='warn'] { color: #ffd166; }
+#status[data-level='error'] { color: #ff8a8a; }
+
+#credit {
+  align-self: flex-end;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  opacity: 0.5;
+}
+
+#burst-label {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  max-width: 90vw;
+  transform: translate(-50%, -50%);
+  font-size: clamp(36px, 11vmin, 120px);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-align: center;
+  overflow-wrap: anywhere;
+  color: #fff;
+  text-shadow:
+    0 0 10px var(--c1),
+    0 0 34px var(--c1),
+    0 0 70px var(--c2);
+  opacity: 0;
+  pointer-events: none;
+}
+
+#burst-label.is-live { animation: burst-label 1.6s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+
+@keyframes burst-label {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  18% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+  70% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+/* Düşük kalite: pahalı gölge ve filtreler kapanır. */
+.quality-low #box,
+.quality-low .msg,
+.quality-low .emph-trigger,
+.quality-low .emph-highlight,
+.quality-low .emph-mention,
+.quality-low .emph-first {
+  box-shadow: none;
+  filter: none;
+}
+
+.quality-low .msg-user,
+.quality-low #burst-label { text-shadow: none; }
+
+.quality-low .emph-trigger { animation: none; }
+.quality-low #box.is-bursting { animation: none; background: var(--tint-1); }
+
+/* Hareket azaltma: taşıma ve ölçekleme yok, sadece yumuşak görünme kalır. */
+.motion-reduced .msg,
+.motion-reduced .emph-trigger,
+.motion-reduced #box.is-bursting {
+  animation: none;
+}
+
+.motion-reduced #box.is-bursting {
+  box-shadow:
+    0 0 20px var(--c1),
+    0 0 36px var(--c2);
+}
+
+.motion-reduced #burst-label.is-live { animation: burst-fade 1.6s linear both; }
+
+@keyframes burst-fade {
+  0%, 100% { opacity: 0; }
+  15%, 75% { opacity: 1; }
+}
+
+.quality-low.motion-reduced #box.is-bursting { box-shadow: none; }

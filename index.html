@@ -1,0 +1,157 @@
+<!doctype html>
+<!-- Neon Stream Overlay yapılandırma sayfası - Made By FALCREB -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      name="description"
+      content="Free neon chat overlay for OBS Browser Source. Live demo and link generator. No backend, no login."
+    />
+    <title>Neon Stream Overlay: live demo and OBS link generator</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="page-head">
+      <h1>Neon Stream Overlay</h1>
+      <p>
+        Free neon chat for OBS Browser Source. No backend and no login. The preview runs on simulated
+        chat and connects to nothing.
+      </p>
+    </header>
+
+    <main class="layout">
+      <form id="form" class="panel" autocomplete="off">
+        <fieldset>
+          <legend>Chat source</legend>
+          <label class="check">
+            <input type="checkbox" name="demo" value="1" checked />
+            Demo mode (simulated chat, no connection)
+          </label>
+          <label>
+            Twitch channel name
+            <input name="twitch" placeholder="your_channel" maxlength="60" spellcheck="false" />
+            <small>Read-only and anonymous. Never enter a password or token here.</small>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Look</legend>
+          <label>
+            Theme
+            <select name="theme">
+              <option value="cyber">Cyber</option>
+              <option value="magma">Magma</option>
+              <option value="toxic">Toxic</option>
+              <option value="ice">Ice</option>
+              <option value="synth">Synth</option>
+            </select>
+          </label>
+          <label class="check">
+            <input type="checkbox" name="customColors" />
+            Use custom colours
+          </label>
+          <div class="row">
+            <label>Colour 1 <input type="color" name="c1" value="#00f0ff" /></label>
+            <label>Colour 2 <input type="color" name="c2" value="#ff2bd6" /></label>
+          </div>
+          <div class="row">
+            <label>
+              Position
+              <select name="pos">
+                <option value="bl">Bottom left</option>
+                <option value="br">Bottom right</option>
+                <option value="tl">Top left</option>
+                <option value="tr">Top right</option>
+              </select>
+            </label>
+            <label>Box width (px) <input type="number" name="w" value="420" min="240" max="1600" /></label>
+          </div>
+          <div class="row">
+            <label>Text size (px) <input type="number" name="font" value="18" min="12" max="40" /></label>
+            <label>Panel opacity (%) <input type="number" name="panel" value="70" min="0" max="100" /></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Chat</legend>
+          <div class="row">
+            <label>Messages on screen <input type="number" name="max" value="12" min="3" max="50" /></label>
+            <label>Fade after (s, 0 = never) <input type="number" name="fade" value="0" min="0" max="600" /></label>
+          </div>
+          <label>Max message length <input type="number" name="maxlen" value="200" min="20" max="500" /></label>
+          <label>
+            Hide these users (bots)
+            <input name="ignore" placeholder="nightbot, streamelements" spellcheck="false" />
+          </label>
+          <label class="check"><input type="checkbox" name="hidecmd" value="1" /> Hide effect commands from chat</label>
+          <label class="check"><input type="checkbox" name="hidelinks" value="1" /> Replace links with [link]</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Effects</legend>
+          <label>Burst commands <input name="commands" value="!hype" spellcheck="false" /></label>
+          <label>
+            Burst keywords
+            <input name="keywords" placeholder="clutch, gg" spellcheck="false" />
+          </label>
+          <label>
+            Highlight words (glow, no burst)
+            <input name="highlights" placeholder="giveaway" spellcheck="false" />
+          </label>
+          <div class="row">
+            <label>
+              Who can trigger bursts
+              <select name="fxby">
+                <option value="all">Everyone</option>
+                <option value="mods">Mods and broadcaster</option>
+              </select>
+            </label>
+            <label>Burst cooldown (s) <input type="number" name="cooldown" value="8" min="0" max="300" /></label>
+          </div>
+          <label class="check">
+            <input type="checkbox" name="modkw" value="1" />
+            Let mods add keywords live: !neonkw add word, !neonkw del word, !neonkw clear
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Performance and comfort</legend>
+          <label class="check"><input type="checkbox" name="motion" value="reduced" /> Reduced motion</label>
+          <label class="check"><input type="checkbox" name="quality" value="low" /> Low quality (saves CPU)</label>
+          <label class="check"><input type="checkbox" name="status" value="1" checked /> Show connection status</label>
+          <label class="check"><input type="checkbox" name="credit" value="1" checked /> Show small credit on overlay</label>
+        </fieldset>
+      </form>
+
+      <section class="side">
+        <div class="preview" aria-label="Overlay preview on a transparent background">
+          <iframe id="preview" title="Overlay preview, demo mode" loading="eager"></iframe>
+        </div>
+        <div class="panel">
+          <label for="link">Your OBS link</label>
+          <textarea id="link" rows="3" readonly spellcheck="false"></textarea>
+          <div class="row buttons">
+            <button type="button" id="copy">Copy link</button>
+            <a id="open" class="button" target="_blank" rel="noopener noreferrer">Open overlay</a>
+          </div>
+          <p id="hint" class="hint" role="status"></p>
+          <h2>Add it to OBS</h2>
+          <ol>
+            <li>Copy the link above. Turn Demo mode off first and enter your channel.</li>
+            <li>In OBS: Sources, +, Browser, Create new.</li>
+            <li>Paste the link into URL. Set width 450 and height 800.</li>
+            <li>Leave the custom CSS as it is. The background stays transparent.</li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <footer class="page-foot">
+      <a href="https://github.com/berkantshn/neon-stream-overlay" rel="noopener noreferrer">Source on GitHub</a>
+      <span>Made By FALCREB</span>
+    </footer>
+    <script type="module" src="/src/config-page/main.js"></script>
+  </body>
+</html>
