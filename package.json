@@ -2,7 +2,7 @@
   "name": "neon-stream-overlay",
   "version": "0.1.0",
   "private": true,
-  "description": "Free, zero-backend neon chat overlay for OBS Browser Source. Twitch chat without login, demo mode, URL-based config.",
+  "description": "Free neon chat overlay for OBS Browser Source. Twitch chat with no backend and no login, optional Kick through your own bridge, demo mode, URL-based config.",
   "author": "FALCREB",
   "license": "MIT",
   "type": "module",
@@ -19,7 +19,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test \"tests/*.test.js\""
+    "test": "node --test \"tests/*.test.js\"",
+    "test:e2e": "node tests/e2e/kick-e2e.mjs"
   },
   "devDependencies": {
     "vite": "^8.3.5"

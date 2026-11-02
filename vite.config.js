@@ -12,10 +12,18 @@ const BASE_CSP = [
 ];
 
 // Overlay yalnızca Twitch WebSocket adresine bağlanabilir; yapılandırma sayfası hiçbir yere bağlanmaz.
+// Köprü adresi kişiye özel olduğu için Kick sayfası burada yalnızca wss: izni alır;
+// src/overlay/csp-lock.js bu izni overlay kodu başlamadan doğrulanmış tek adrese daraltır.
 const CSP_BY_PAGE = {
   overlay: [...BASE_CSP, 'connect-src wss://irc-ws.chat.twitch.tv'],
+  'overlay-kick': [...BASE_CSP, 'connect-src wss:'],
   config: [...BASE_CSP, "connect-src 'none'", "frame-src 'self'"],
 };
+
+function pageOf(path) {
+  if (path.endsWith('overlay-kick.html')) return 'overlay-kick';
+  return path.endsWith('overlay.html') ? 'overlay' : 'config';
+}
 
 // CSP sadece derlemeye eklenir; geliştirme sunucusunun HMR bağlantısı bozulmasın diye.
 function injectCsp() {
@@ -25,10 +33,9 @@ function injectCsp() {
     transformIndexHtml: {
       order: 'post',
       handler(html, ctx) {
-        const page = ctx.path.endsWith('overlay.html') ? 'overlay' : 'config';
         return html.replace(
           '<head>',
-          `<head>\n    <meta http-equiv="Content-Security-Policy" content="${CSP_BY_PAGE[page].join('; ')}" />`,
+          `<head>\n    <meta http-equiv="Content-Security-Policy" content="${CSP_BY_PAGE[pageOf(ctx.path)].join('; ')}" />`,
         );
       },
     },
@@ -45,7 +52,7 @@ export default defineConfig({
     cssTarget: 'chrome95',
     modulePreload: { polyfill: false },
     rollupOptions: {
-      input: { index: 'index.html', overlay: 'overlay.html' },
+      input: { index: 'index.html', overlay: 'overlay.html', 'overlay-kick': 'overlay-kick.html' },
     },
   },
 });

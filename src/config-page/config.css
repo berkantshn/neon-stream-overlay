@@ -86,6 +86,8 @@ label.check input { margin-top: 4px; flex: none; }
 
 small { display: block; margin-top: 3px; color: var(--muted); }
 
+.note { margin: 0 0 8px; font-size: 14px; color: var(--muted); }
+
 input:not([type='checkbox'], [type='color']),
 select,
 textarea {

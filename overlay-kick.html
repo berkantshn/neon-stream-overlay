@@ -1,0 +1,24 @@
+<!doctype html>
+<!-- Neon Stream Overlay, Kick köprüsü sayfası - Made By FALCREB -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="robots" content="noindex" />
+    <title>Neon Stream Overlay</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <canvas id="fx" aria-hidden="true"></canvas>
+    <main id="stage" data-pos="bl">
+      <section id="box" class="is-empty status-hidden" aria-label="Live chat">
+        <div id="status" role="status" hidden></div>
+        <div id="messages" aria-live="off"></div>
+        <div id="credit">Made By FALCREB</div>
+      </section>
+    </main>
+    <div id="burst-label" aria-hidden="true"></div>
+    <script type="module" src="/src/overlay/kick-entry.js"></script>
+  </body>
+</html>

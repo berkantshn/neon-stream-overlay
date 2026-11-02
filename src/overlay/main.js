@@ -1,7 +1,7 @@
 // Made By FALCREB
 // Overlay giriş noktası: ayarı okur, kaynakları başlatır, mesajları ekrana aktarır.
 
-import { parseConfig, resolveColors, resolveSources } from '../core/config.js';
+import { parseConfig, parseKickKey, resolveColors, resolveKickBridge, resolveSources } from '../core/config.js';
 import { createPipeline } from '../core/triggers.js';
 import { createDemoAdapter } from '../adapters/demo.js';
 import { createTwitchAdapter } from '../adapters/twitch.js';
@@ -16,6 +16,7 @@ const STATUS_OK_MS = 4000;
 
 const config = parseConfig(location.search);
 const sources = resolveSources(config);
+const kickBridge = resolveKickBridge(config);
 const colors = resolveColors(config);
 const root = document.documentElement;
 const stage = document.getElementById('stage');
@@ -136,10 +137,30 @@ if (config.ignoredSensitive.length) {
   );
 }
 
+// Kick kodu yalnızca köprü ayarlıysa ve CSP kilidi atıldıysa yüklenir. Buradaki hiçbir hata Twitch'i etkilemez.
+function startKick() {
+  if (root.dataset.kickLock !== kickBridge) {
+    setStatus('warn', 'Kick needs its own link. Create it again on the setup page.');
+    return;
+  }
+  const key = parseKickKey(location.hash);
+  if (!key) {
+    setStatus('warn', 'Kick bridge: the overlay key is missing from the link. Create it again on the setup page.');
+    return;
+  }
+  import('../adapters/kick-bridge.js')
+    .then(({ createKickBridgeAdapter }) =>
+      createKickBridgeAdapter({ origin: kickBridge, key, ...shared }).start(),
+    )
+    .catch(() => setStatus('error', 'Kick bridge could not start. Reload this overlay.'));
+}
+
 if (sources.demo) {
   createDemoAdapter({ config, ...shared }).start();
-} else if (sources.twitch) {
-  createTwitchAdapter({ channel: sources.twitch, ...shared }).start();
-} else if (!config.ignoredSensitive.length) {
-  setStatus('warn', 'No chat source set. Open the setup page to create your link.');
+} else {
+  if (sources.twitch) createTwitchAdapter({ channel: sources.twitch, ...shared }).start();
+  if (kickBridge) startKick();
+  if (!sources.twitch && !kickBridge && !config.ignoredSensitive.length) {
+    setStatus('warn', 'No chat source set. Open the setup page to create your link.');
+  }
 }

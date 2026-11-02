@@ -1,0 +1,20 @@
+# Neon Kick Bridge - Made By FALCREB
+# Gizli değerler bu dosyaya yazılmaz: OVERLAY_KEY ve BROADCASTER_USER_ID "wrangler secret put" ile girilir.
+name = "neon-kick-bridge"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+# Kick'in webhook göndericisi özel alan adlarında Cloudflare bot korumasına takılabilir; workers.dev kullanılır.
+workers_dev = true
+
+# Sohbet içeriği günlüğe yazılmaz; Cloudflare Workers Logs kapalı tutulur.
+[observability]
+enabled = false
+
+[[durable_objects.bindings]]
+name = "HUB"
+class_name = "BridgeHub"
+
+# Ücretsiz planda yalnızca SQLite tabanlı Durable Object kullanılabilir.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["BridgeHub"]
