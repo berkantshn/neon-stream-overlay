@@ -7,7 +7,7 @@
     <meta name="referrer" content="no-referrer" />
     <meta
       name="description"
-      content="Free neon chat overlay for OBS Browser Source. Live demo and link generator. No backend, no login."
+      content="Free neon chat overlay for OBS Browser Source. Live demo and link generator. Twitch needs no backend and no login. Kick is optional through your own bridge."
     />
     <title>Neon Stream Overlay: live demo and OBS link generator</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
@@ -16,8 +16,8 @@
     <header class="page-head">
       <h1>Neon Stream Overlay</h1>
       <p>
-        Free neon chat for OBS Browser Source. No backend and no login. The preview runs on simulated
-        chat and connects to nothing.
+        Free neon chat for OBS Browser Source. Twitch needs no backend and no login. Kick is optional and
+        needs your own bridge. The preview runs on simulated chat and connects to nothing.
       </p>
     </header>
 
@@ -33,6 +33,38 @@
             Twitch channel name
             <input name="twitch" placeholder="your_channel" maxlength="60" spellcheck="false" />
             <small>Read-only and anonymous. Never enter a password or token here.</small>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Kick bridge (optional)</legend>
+          <p class="note">
+            Kick needs a small bridge that you deploy yourself, once. Not sure? Leave this empty: Twitch
+            works without it.
+            <a
+              href="https://github.com/berkantshn/neon-stream-overlay/blob/main/docs/KICK.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Step-by-step setup</a
+            >
+          </p>
+          <label>
+            Bridge address
+            <input
+              name="kick"
+              type="url"
+              placeholder="https://neon-kick-bridge.your-name.workers.dev"
+              maxlength="300"
+              spellcheck="false"
+            />
+          </label>
+          <label>
+            Overlay key
+            <input name="kickkey" type="password" maxlength="128" spellcheck="false" autocomplete="off" />
+            <small>
+              Goes only into your link, after the # sign. Never enter your Kick Client Secret here, and
+              never show the link on stream.
+            </small>
           </label>
         </fieldset>
 
