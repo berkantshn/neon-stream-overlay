@@ -71,7 +71,7 @@ The setup page writes these for you. They are listed here for manual editing.
 | `modkw` | `0` `1` | `0` | Let mods use `!neonkw add word`, `!neonkw del word` and `!neonkw clear` |
 | `motion` | `auto` `reduced` | `auto` | Reduced motion. `auto` follows the system setting |
 | `quality` | `high` `low` | `high` | `low` uses fewer particles and no glow shadows |
-| `credit` | `0` `1` | `1` | Small credit on the overlay |
+| `credit` | `0` `1` | `0` | Small credit on the overlay. Off unless you turn it on |
 | `status` | `0` `1` | `1` | Connection status label |
 
 Lists hold up to 20 items of up to 32 characters each. Keywords added with `!neonkw` last until the page reloads.

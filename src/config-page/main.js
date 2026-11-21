@@ -23,7 +23,7 @@ function readForm() {
     if (element.name === 'c1' || element.name === 'c2') continue;
     if (element.type === 'checkbox') {
       if (element.checked) params.set(element.name, element.value);
-      else if (element.name === 'status' || element.name === 'credit') params.set(element.name, '0');
+      else if (element.name === 'status') params.set(element.name, '0');
     } else if (element.value !== '' || element.name === 'commands') {
       params.set(element.name, element.value);
     }
