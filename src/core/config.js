@@ -150,7 +150,7 @@ const SCHEMA = {
   // Performans ve erişilebilirlik
   motion: choice(['auto', 'reduced'], 'auto'),
   quality: choice(['high', 'low'], 'high'),
-  credit: bool(true),
+  credit: bool(false),
   status: bool(true),
 };
 

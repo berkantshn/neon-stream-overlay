@@ -18,7 +18,7 @@ test('parametresiz ayar güvenli varsayılan döner', () => {
   assert.equal(config.demo, false);
   assert.equal(config.twitch, '');
   assert.deepEqual(config.commands, ['!hype']);
-  assert.equal(config.credit, true);
+  assert.equal(config.credit, false);
   assert.equal(config.motion, 'auto');
 });
 
@@ -78,7 +78,7 @@ test('bağlantı gidiş-dönüşte aynı ayarları verir', () => {
   const search =
     'twitch=chan&theme=toxic&c1=%23112233&panel=40&font=22&w=500&pos=tr&max=8&fade=30&maxlen=120' +
     '&ignore=bot1,bot2&hidecmd=1&hidelinks=1&commands=!hype,!boom&keywords=gg&highlights=win' +
-    '&fxby=mods&cooldown=3&modkw=1&motion=reduced&quality=low&credit=0&status=0';
+    '&fxby=mods&cooldown=3&modkw=1&motion=reduced&quality=low&credit=1&status=0';
   const config = parseConfig(search);
   const url = new URL(buildOverlayUrl(PAGE, config));
   assert.equal(url.pathname, '/neon-stream-overlay/overlay.html');
